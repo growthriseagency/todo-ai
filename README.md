@@ -1,26 +1,21 @@
-# Todo AI - Build Your Ideas
+# GitHub MCP Server Demo
 
-A modern Todo list application built with HTML, JavaScript, and Tailwind CSS.
+A simple web application that demonstrates GitHub MCP (Machine Coding Protocol) functionality. This app allows users to interact with GitHub repositories, issues, and pull requests directly from the browser.
 
 ## Features
 
-- Create and manage tasks easily
-- Edit task details with Markdown support
-- Preview Markdown formatting in a dedicated panel
-- Responsive design that works on all screen sizes
-- Data persistence using localStorage
+- View GitHub repositories
+- Manage issues and pull requests
+- Perform GitHub operations without leaving the application
+
+## Technologies Used
+
+- HTML
+- JavaScript
+- GitHub API
 
 ## Getting Started
 
 1. Clone this repository
 2. Open `index.html` in your browser
-3. Start adding tasks!
-
-## How It Works
-
-- The app is split into two panels: Todo list on the left, and task details on the right
-- Click on a task to view its details in the right panel
-- Task details support Markdown formatting for rich text
-- Edit the "Add a New Task" title to change the banner title
-
-Built by Shri 
+3. Use the application to interact with GitHub 
