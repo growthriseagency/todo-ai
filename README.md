@@ -18,4 +18,4 @@ A simple web application that demonstrates GitHub MCP (Machine Coding Protocol) 
 
 1. Clone this repository
 2. Open `index.html` in your browser
-3. Use the application to interact with GitHub 
+3. Use the application to interact with GitHub # todo-ai
