@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO AI - Build Your Ideas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Add Marked.js library for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Style for completed tasks - applied dynamically */
+        .completed .task-text {
+            /* text-decoration: line-through; */ /* Removed for cleaner look */
+            color: #9ca3af; /* text-gray-400 */
+        }
+        .completed {
+             opacity: 0.7;
+             /* background-color: rgba(0,0,0,0.1); */ /* Optional darker bg */
+        }
+        /* Basic scrollbar styling for webkit browsers */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f2937; /* bg-gray-800 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #3b82f6; /* bg-blue-500 */
+            border-radius: 4px;
+            border: 2px solid #1f2937; /* bg-gray-800 */
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #2563eb; /* bg-blue-600 */
+        }
+
+        /* Basic Markdown Preview Styling */
+        .markdown-preview h1,
+        .markdown-preview h2,
+        .markdown-preview h3,
+        .markdown-preview h4,
+        .markdown-preview h5,
+        .markdown-preview h6 {
+            color: #93c5fd; /* text-blue-300 */
+            margin-top: 0.75em;
+            margin-bottom: 0.5em;
+            font-weight: 600;
+        }
+        .markdown-preview h1 { font-size: 1.5em; }
+        .markdown-preview h2 { font-size: 1.25em; }
+        .markdown-preview h3 { font-size: 1.1em; }
+        .markdown-preview p {
+            margin-bottom: 0.75em;
+            line-height: 1.6;
+        }
+        .markdown-preview ul,
+        .markdown-preview ol {
+            margin-left: 1.5em;
+            margin-bottom: 0.75em;
+        }
+        .markdown-preview ul { list-style: disc; }
+        .markdown-preview ol { list-style: decimal; }
+        .markdown-preview li {
+            margin-bottom: 0.25em;
+        }
+        .markdown-preview code {
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #e5e7eb; /* text-gray-200 */
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .markdown-preview pre {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 0.75em;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-bottom: 0.75em;
+        }
+        .markdown-preview pre code {
+             padding: 0;
+             background-color: transparent;
+             border-radius: 0;
+        }
+        .markdown-preview a {
+            color: #60a5fa; /* text-blue-400 */
+            text-decoration: underline;
+        }
+        .markdown-preview a:hover {
+            color: #3b82f6; /* text-blue-500 */
+        }
+        .markdown-preview blockquote {
+            border-left: 4px solid #4b5563; /* border-gray-600 */
+            padding-left: 1em;
+            margin-left: 0;
+            margin-bottom: 0.75em;
+            color: #d1d5db; /* text-gray-300 */
+            font-style: italic;
+        }
+        .markdown-preview hr {
+            border-top: 1px solid #4b5563; /* border-gray-600 */
+            margin: 1.5em 0;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 min-h-screen font-sans text-gray-200">
+
+    <!-- Hero Banner -->
+    <div class="bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900 py-12 text-white shadow-lg mb-10 border-b border-blue-800/50">
+        <h1 id="bannerTitle" class="text-4xl md:text-5xl font-bold text-center px-4 tracking-tight">TODO AI - Build Your Ideas</h1>
+    </div>
+
+    <!-- Main Layout Container -->
+    <div class="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-10 flex flex-col md:flex-row gap-6 md:gap-8">
+        
+        <!-- Left Column: Todo List (1/3 width on md+) -->
+        <div class="w-full md:w-1/3 flex-shrink-0">
+            <div class="bg-gray-800 bg-opacity-75 backdrop-blur-md rounded-2xl shadow-xl p-6 md:p-8 border border-gray-700">
+
+                <!-- Input Section -->
+                <h2 
+                    id="editableListTitle" 
+                    class="text-xl font-semibold mb-5 text-blue-300 cursor-text hover:bg-gray-700/50 rounded-md px-2 -mx-2 transition duration-150 ease-in-out" 
+                    contenteditable="true"
+                >Add a New Task</h2>
+                <div class="flex mb-6 shadow-md rounded-lg overflow-hidden border border-gray-600 focus-within:ring-2 focus-within:ring-cyan-400 transition duration-150 ease-in-out">
+                    <input
+                        type="text"
+                        id="taskInput"
+                        placeholder="Enter your next idea..."
+                        aria-label="Add a new task"
+                        class="flex-grow p-4 bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none transition duration-150 ease-in-out"
+                    />
+                    <button
+                        id="addTaskBtn"
+                        aria-label="Add Task"
+                        class="bg-cyan-500 text-white font-semibold px-5 py-3 hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-300 transition duration-150 ease-in-out flex items-center flex-shrink-0"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                          </svg>
+                        <span>Add</span>
+                    </button>
+                </div>
+
+                <!-- Task List -->
+                <h2 class="text-xl font-semibold mb-5 text-blue-300 border-t border-gray-700 pt-6">Your Tasks</h2>
+                <ul id="taskList" class="list-none space-y-3">
+                    <!-- Tasks dynamically added here -->
+                    <!-- Simplified Example structure for app.js reference:
+                    <li class="task-item ...">
+                        ...
+                    </li>
+                     -->
+                </ul>
+            </div> <!-- End Left Inner Div -->
+        </div> <!-- End Left Column Div -->
+
+        <!-- Right Column: Details Preview (2/3 width on md+) -->
+        <div class="w-full md:w-2/3 flex-shrink-0">
+            <div id="previewPanel" class="bg-gray-800 bg-opacity-75 backdrop-blur-md rounded-2xl shadow-xl p-6 md:p-8 border border-gray-700 sticky top-10">
+                <h2 class="text-xl font-semibold mb-5 text-blue-300">Task Details</h2>
+                <div id="previewContent" class="prose prose-invert max-w-none text-gray-300">
+                    <p class="italic">Select a task from the list to see its details here.</p>
+                    <!-- Preview content will be loaded here -->
+                </div>
+                 <div id="previewActions" class="mt-4"></div>
+            </div> <!-- End Right Inner Div (#previewPanel) -->
+        </div> <!-- End Right Column Div -->
+
+    </div> <!-- End Main Layout Container -->
+
+    <script src="app.js" defer></script>
+
+    <!-- Footer -->
+    <footer class="mt-12 py-6 border-t border-gray-700/50 text-center text-gray-400 text-sm">
+        <p>Built By Shri</p>
+        <a href="https://www.youtube.com/@shri-builds-ai-and-automations" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           class="hover:text-cyan-300 transition duration-150 ease-in-out underline underline-offset-2">
+           YouTube Channel
+        </a>
+    </footer>
+
+</body>
+</html> 
