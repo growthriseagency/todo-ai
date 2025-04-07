@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const storageKey = 'todoTasks';
     let selectedTaskId = null; // Track the selected task ID
+    let draggedTask = null; // Track the currently dragged task
 
     // ----- Data Handling -----
     const getTasks = () => {
@@ -43,6 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const li = document.createElement('li');
         li.className = `task-item bg-white border border-gray-200 rounded-lg transition duration-150 ease-in-out overflow-hidden hover:bg-gray-50 cursor-pointer`; // Updated for light theme
         li.dataset.taskId = task.id;
+        
+        // Add draggable attributes for drag-and-drop functionality
+        li.draggable = true;
+        li.setAttribute('aria-grabbed', 'false');
+        li.setAttribute('aria-roledescription', 'Draggable task item');
 
         // Add selected class if this task is selected
         if (task.id === selectedTaskId) {
@@ -55,6 +61,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const mainRow = document.createElement('div');
         mainRow.className = 'flex items-center justify-between p-4';
+
+        // Add drag handle
+        const dragHandle = document.createElement('div');
+        dragHandle.className = 'flex-shrink-0 mr-2 text-gray-400 cursor-grab active:cursor-grabbing';
+        dragHandle.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
+            </svg>
+        `;
+        dragHandle.ariaLabel = 'Drag handle';
+        dragHandle.setAttribute('role', 'button');
+        dragHandle.setAttribute('tabindex', '0');
 
         const taskContent = document.createElement('div');
         taskContent.className = 'flex items-center flex-grow mr-4 min-w-0';
@@ -107,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         actionsDiv.appendChild(deleteBtn);
 
+        mainRow.appendChild(dragHandle);
         mainRow.appendChild(taskContent);
         mainRow.appendChild(actionsDiv);
 
@@ -114,6 +133,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Add click listener to the whole LI for selection
         li.addEventListener('click', handleSelectTask); 
+        
+        // Add drag-and-drop event listeners
+        li.addEventListener('dragstart', handleDragStart);
+        li.addEventListener('dragend', handleDragEnd);
+        li.addEventListener('dragover', handleDragOver);
+        li.addEventListener('dragenter', handleDragEnter);
+        li.addEventListener('dragleave', handleDragLeave);
+        li.addEventListener('drop', handleDrop);
 
         return li;
     };
@@ -329,18 +356,130 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTaskList(); // Re-render to update selected styling
     };
 
-    // ----- Initialize UI -----
+    // ----- Drag and Drop Handlers -----
+    const handleDragStart = (e) => {
+        // Prevent drag if clicking on buttons or inputs
+        if (e.target.closest('button') || e.target.closest('input') || e.target.contentEditable === 'true') {
+            e.preventDefault();
+            return;
+        }
+        
+        draggedTask = e.currentTarget;
+        e.currentTarget.setAttribute('aria-grabbed', 'true');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', e.currentTarget.dataset.taskId);
+        
+        // Add dragging class for visual feedback
+        setTimeout(() => {
+            e.currentTarget.classList.add('opacity-50');
+        }, 0);
+    };
+
+    const handleDragEnd = (e) => {
+        e.currentTarget.setAttribute('aria-grabbed', 'false');
+        e.currentTarget.classList.remove('opacity-50');
+        
+        // Reset all dropzones
+        document.querySelectorAll('.task-item').forEach(item => {
+            item.classList.remove('border-blue-300', 'border-t-2', 'border-b-2');
+        });
+        
+        draggedTask = null;
+    };
+
+    const handleDragOver = (e) => {
+        if (e.preventDefault) {
+            e.preventDefault(); // Allows us to drop
+        }
+        e.dataTransfer.dropEffect = 'move';
+        return false;
+    };
+
+    const handleDragEnter = (e) => {
+        const taskItem = e.currentTarget;
+        if (draggedTask !== taskItem) {
+            // Add visual indicator for drop target
+            taskItem.classList.add('border-blue-300');
+            
+            // Show indicator above or below depending on position
+            const rect = taskItem.getBoundingClientRect();
+            const midY = rect.top + rect.height / 2;
+            
+            if (e.clientY < midY) {
+                taskItem.classList.add('border-t-2');
+                taskItem.classList.remove('border-b-2');
+            } else {
+                taskItem.classList.add('border-b-2');
+                taskItem.classList.remove('border-t-2');
+            }
+        }
+    };
+
+    const handleDragLeave = (e) => {
+        e.currentTarget.classList.remove('border-blue-300', 'border-t-2', 'border-b-2');
+    };
+
+    const handleDrop = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        
+        if (draggedTask === e.currentTarget) return;
+        
+        const draggedTaskId = e.dataTransfer.getData('text/plain');
+        const targetTaskId = e.currentTarget.dataset.taskId;
+        
+        if (draggedTaskId === targetTaskId) return;
+        
+        // Determine if dropping before or after the target
+        const rect = e.currentTarget.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+        const isBefore = e.clientY < midY;
+        
+        // Find indexes of both tasks
+        const draggedIndex = tasks.findIndex(task => task.id === draggedTaskId);
+        const targetIndex = tasks.findIndex(task => task.id === targetTaskId);
+        
+        if (draggedIndex === -1 || targetIndex === -1) return;
+        
+        // Reorder tasks array
+        const [removed] = tasks.splice(draggedIndex, 1);
+        let newIndex = targetIndex;
+        
+        // If dragging from above to below, adjust the target index
+        if (draggedIndex < targetIndex) {
+            newIndex = isBefore ? targetIndex - 1 : targetIndex;
+        }
+        // If dragging from below to above, adjust the target index
+        else {
+            newIndex = isBefore ? targetIndex : targetIndex + 1;
+        }
+        
+        tasks.splice(newIndex, 0, removed);
+        
+        // Save and render the updated order
+        saveTasks(tasks);
+        renderTaskList();
+    };
+
+    // ----- Application Initialization -----
     const initializeApp = () => {
-        // Set up event listeners
-        taskInput.addEventListener('keypress', (e) => {
+        renderTaskList();
+        addTaskBtn.addEventListener('click', handleAddTask);
+        
+        // Submit form on Enter key as well
+        taskInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 handleAddTask();
                 e.preventDefault(); // Prevent form submission
             }
         });
-        addTaskBtn.addEventListener('click', handleAddTask);
         
-        renderTaskList(); // Initial render
+        // Allow editing list title
+        editableListTitle.addEventListener('blur', (e) => {
+            if (e.target.textContent.trim() === '') {
+                e.target.textContent = 'Add a New Task'; // Default value
+            }
+        });
         
         // Save the list title to localStorage when it changes
         editableListTitle.addEventListener('blur', () => {
