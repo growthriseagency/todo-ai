@@ -195,6 +195,33 @@
             border-top: 1px solid #E5E7EB; /* gray-200 */
             margin: 1.5em 0;
         }
+        
+        /* Drag and Drop Styles */
+        .task-item {
+            transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+        }
+        
+        .task-item[aria-grabbed="true"] {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        .task-item.border-t-2 {
+            border-top-color: #93C5FD; /* blue-300 */
+            border-top-width: 3px;
+            transform: translateY(-2px);
+        }
+        
+        .task-item.border-b-2 {
+            border-bottom-color: #93C5FD; /* blue-300 */
+            border-bottom-width: 3px;
+            transform: translateY(2px);
+        }
+        
+        /* Space between tasks for better dragging UX */
+        .sortable-list {
+            padding: 4px 0;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-sans text-gray-800">
@@ -294,8 +321,9 @@
                 </div>
 
                 <!-- Task List -->
-                <h2 class="text-xl font-semibold mb-5 text-gray-800 border-t border-gray-200 pt-6">Your Tasks</h2>
-                <ul id="taskList" class="list-none space-y-3">
+                <h2 class="text-xl font-semibold mb-3 text-gray-800 border-t border-gray-200 pt-6">Your Tasks</h2>
+                <p class="text-sm text-gray-500 mb-4 italic">Drag tasks to prioritize them in order of importance</p>
+                <ul id="taskList" class="list-none space-y-3 sortable-list">
                     <!-- Tasks dynamically added here -->
                     <!-- Simplified Example structure for app.js reference:
                     <li class="task-item ...">
