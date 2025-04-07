@@ -200,8 +200,64 @@
 <body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-sans text-gray-800">
 
     <!-- Hero Banner -->
-    <div class="bg-white py-8 text-gray-900 shadow-sm mb-10 border-b border-gray-200">
-        <h1 id="bannerTitle" class="text-4xl md:text-5xl font-bold text-center px-4 tracking-tight">TODO AI - Build Your Ideas</h1>
+    <div class="bg-white relative overflow-hidden py-16 sm:py-20 shadow-md border-b border-gray-200 mb-10">
+        <!-- Background pattern/gradient -->
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 opacity-40"></div>
+        
+        <!-- Content container -->
+        <div class="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row items-center">
+                <!-- Left text content -->
+                <div class="w-full md:w-3/5 mb-8 md:mb-0 md:pr-8">
+                    <h1 id="bannerTitle" class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight leading-tight mb-4">
+                        TODO AI - Build Your Ideas
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl">
+                        Capture, organize, and transform your ideas into action. The modern way to manage tasks with AI assistance.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition shadow-sm flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                            </svg>
+                            Create New Task
+                        </button>
+                        <button class="px-6 py-3 border border-gray-300 hover:border-gray-400 bg-white text-gray-700 font-medium rounded-lg transition flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                            </svg>
+                            How It Works
+                        </button>
+                    </div>
+                </div>
+                <!-- Right illustration/image -->
+                <div class="w-full md:w-2/5">
+                    <div class="relative mx-auto w-full max-w-md">
+                        <div class="bg-white rounded-xl shadow-lg p-4 border border-gray-100">
+                            <div class="space-y-2">
+                                <div class="w-3/4 h-4 bg-blue-100 rounded"></div>
+                                <div class="w-full h-16 bg-gray-100 rounded"></div>
+                                <div class="flex space-x-2">
+                                    <div class="w-4 h-4 bg-blue-400 rounded-full"></div>
+                                    <div class="w-full h-4 bg-gray-100 rounded"></div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <div class="w-4 h-4 bg-green-400 rounded-full"></div>
+                                    <div class="w-full h-4 bg-gray-100 rounded"></div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <div class="w-4 h-4 bg-yellow-400 rounded-full"></div>
+                                    <div class="w-full h-4 bg-gray-100 rounded"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Decorative elements -->
+                        <div class="absolute -top-4 -right-4 w-24 h-24 bg-blue-100 rounded-full opacity-50"></div>
+                        <div class="absolute -bottom-4 -left-4 w-32 h-32 bg-indigo-100 rounded-full opacity-50"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Main Layout Container -->
