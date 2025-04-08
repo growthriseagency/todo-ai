@@ -110,6 +110,9 @@
              opacity: 0.8;
              background-color: rgba(249, 250, 251, 0.7); /* light gray background */
         }
+        .dark .completed {
+             background-color: rgba(31, 41, 55, 0.4); /* dark gray background */
+        }
         /* Basic scrollbar styling for webkit browsers */
         ::-webkit-scrollbar {
             width: 8px;
@@ -117,13 +120,23 @@
         ::-webkit-scrollbar-track {
             background: #F3F4F6; /* light gray */
         }
+        .dark ::-webkit-scrollbar-track {
+            background: #1F2937; /* dark gray */
+        }
         ::-webkit-scrollbar-thumb {
             background-color: #E5E7EB; /* lighter gray */
             border-radius: 4px;
             border: 2px solid #F3F4F6;
         }
+        .dark ::-webkit-scrollbar-thumb {
+            background-color: #4B5563; /* medium gray */
+            border: 2px solid #1F2937;
+        }
         ::-webkit-scrollbar-thumb:hover {
             background-color: #D1D5DB; /* slightly darker on hover */
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background-color: #6B7280; /* lighter on hover */
         }
 
         /* Basic Markdown Preview Styling */
@@ -138,6 +151,14 @@
             margin-bottom: 0.5em;
             font-weight: 600;
         }
+        .dark .markdown-preview h1,
+        .dark .markdown-preview h2,
+        .dark .markdown-preview h3,
+        .dark .markdown-preview h4,
+        .dark .markdown-preview h5,
+        .dark .markdown-preview h6 {
+            color: #F3F4F6; /* light text for headings in dark mode */
+        }
         .markdown-preview h1 { font-size: 1.5em; }
         .markdown-preview h2 { font-size: 1.25em; }
         .markdown-preview h3 { font-size: 1.1em; }
@@ -146,11 +167,18 @@
             line-height: 1.6;
             color: #374151; /* dark gray text */
         }
+        .dark .markdown-preview p {
+            color: #D1D5DB; /* light gray text in dark mode */
+        }
         .markdown-preview ul,
         .markdown-preview ol {
             margin-left: 1.5em;
             margin-bottom: 0.75em;
             color: #374151;
+        }
+        .dark .markdown-preview ul,
+        .dark .markdown-preview ol {
+            color: #D1D5DB;
         }
         .markdown-preview ul { list-style: disc; }
         .markdown-preview ol { list-style: decimal; }
@@ -164,12 +192,19 @@
             border-radius: 3px;
             font-size: 0.9em;
         }
+        .dark .markdown-preview code {
+            background-color: rgba(55, 65, 81, 0.5); /* darker bg in dark mode */
+            color: #E5E7EB; /* light text */
+        }
         .markdown-preview pre {
             background-color: rgba(243, 244, 246, 0.7); /* light gray bg */
             padding: 0.75em;
             border-radius: 6px;
             overflow-x: auto;
             margin-bottom: 0.75em;
+        }
+        .dark .markdown-preview pre {
+            background-color: rgba(31, 41, 55, 0.5); /* dark bg in dark mode */
         }
         .markdown-preview pre code {
              padding: 0;
@@ -180,8 +215,14 @@
             color: #2563EB; /* blue-600 */
             text-decoration: underline;
         }
+        .dark .markdown-preview a {
+            color: #60A5FA; /* blue-400 in dark mode */
+        }
         .markdown-preview a:hover {
             color: #1D4ED8; /* blue-700 */
+        }
+        .dark .markdown-preview a:hover {
+            color: #93C5FD; /* blue-300 in dark mode */
         }
         .markdown-preview blockquote {
             border-left: 4px solid #E5E7EB; /* gray-200 */
@@ -191,9 +232,16 @@
             color: #6B7280; /* gray-500 */
             font-style: italic;
         }
+        .dark .markdown-preview blockquote {
+            border-left-color: #4B5563; /* gray-600 in dark mode */
+            color: #9CA3AF; /* gray-400 in dark mode */
+        }
         .markdown-preview hr {
             border-top: 1px solid #E5E7EB; /* gray-200 */
             margin: 1.5em 0;
+        }
+        .dark .markdown-preview hr {
+            border-top-color: #4B5563; /* gray-600 in dark mode */
         }
         
         /* Drag and Drop Styles */
@@ -204,6 +252,9 @@
         .task-item[aria-grabbed="true"] {
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             z-index: 10;
+        }
+        .dark .task-item[aria-grabbed="true"] {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
         }
         
         .task-item.border-t-2 {
@@ -224,22 +275,22 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-sans text-gray-800">
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 min-h-screen font-sans text-gray-800 dark:text-gray-200 transition-colors duration-200">
 
     <!-- Hero Banner -->
-    <div class="bg-white relative overflow-hidden py-16 sm:py-20 shadow-md border-b border-gray-200 mb-10">
+    <div class="bg-white dark:bg-gray-800 relative overflow-hidden py-16 sm:py-20 shadow-md border-b border-gray-200 dark:border-gray-700 mb-10">
         <!-- Background pattern/gradient -->
-        <div class="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 opacity-40"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 opacity-40"></div>
         
         <!-- Content container -->
         <div class="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="flex flex-col md:flex-row items-center">
                 <!-- Left text content -->
                 <div class="w-full md:w-3/5 mb-8 md:mb-0 md:pr-8">
-                    <h1 id="bannerTitle" class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight leading-tight mb-4">
+                    <h1 id="bannerTitle" class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white tracking-tight leading-tight mb-4">
                         TODO AI - Build Your Ideas
                     </h1>
-                    <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl">
+                    <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl">
                         Capture, organize, and transform your ideas into action. The modern way to manage tasks with AI assistance.
                     </p>
                     <div class="flex flex-wrap gap-4">
@@ -249,11 +300,27 @@
                             </svg>
                             Create New Task
                         </button>
-                        <button class="px-6 py-3 border border-gray-300 hover:border-gray-400 bg-white text-gray-700 font-medium rounded-lg transition flex items-center">
+                        <button class="px-6 py-3 border border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-medium rounded-lg transition flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
                             </svg>
                             How It Works
+                        </button>
+                        <!-- Dark Mode Toggle -->
+                        <button 
+                            id="darkModeToggle" 
+                            class="px-3 py-3 border border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-medium rounded-lg transition flex items-center"
+                            aria-label="Toggle dark mode"
+                            tabindex="0"
+                        >
+                            <!-- Sun icon for dark mode (shown when in dark mode) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden dark:block" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+                            </svg>
+                            <!-- Moon icon for light mode (shown when in light mode) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 block dark:hidden" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -292,26 +359,26 @@
         
         <!-- Left Column: Todo List (1/3 width on md+) -->
         <div class="w-full md:w-1/3 flex-shrink-0">
-            <div class="bg-white rounded-lg shadow-sm p-6 md:p-8 border border-gray-200">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 border border-gray-200 dark:border-gray-700">
 
                 <!-- Input Section -->
                 <h2 
                     id="editableListTitle" 
-                    class="text-xl font-semibold mb-5 text-gray-800 cursor-text hover:bg-gray-100 rounded-md px-2 -mx-2 transition duration-150 ease-in-out" 
+                    class="text-xl font-semibold mb-5 text-gray-800 dark:text-gray-200 cursor-text hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-2 -mx-2 transition duration-150 ease-in-out" 
                     contenteditable="true"
                 >Add a New Task</h2>
-                <div class="flex mb-6 shadow-sm rounded-lg overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-blue-400 transition duration-150 ease-in-out">
+                <div class="flex mb-6 shadow-sm rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600 focus-within:ring-2 focus-within:ring-blue-400 transition duration-150 ease-in-out">
                     <input
                         type="text"
                         id="taskInput"
                         placeholder="Enter your next idea..."
                         aria-label="Add a new task"
-                        class="flex-grow p-4 bg-white text-gray-800 placeholder-gray-400 focus:outline-none transition duration-150 ease-in-out"
+                        class="flex-grow p-4 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none transition duration-150 ease-in-out"
                     />
                     <button
                         id="addTaskBtn"
                         aria-label="Add Task"
-                        class="bg-blue-500 text-white font-semibold px-5 py-3 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-300 transition duration-150 ease-in-out flex items-center flex-shrink-0"
+                        class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-semibold px-5 py-3 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-300 transition duration-150 ease-in-out flex items-center flex-shrink-0"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
@@ -321,8 +388,8 @@
                 </div>
 
                 <!-- Task List -->
-                <h2 class="text-xl font-semibold mb-3 text-gray-800 border-t border-gray-200 pt-6">Your Tasks</h2>
-                <p class="text-sm text-gray-500 mb-4 italic">Drag tasks to prioritize them in order of importance</p>
+                <h2 class="text-xl font-semibold mb-3 text-gray-800 dark:text-gray-200 border-t border-gray-200 dark:border-gray-700 pt-6">Your Tasks</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 italic">Drag tasks to prioritize them in order of importance</p>
                 <ul id="taskList" class="list-none space-y-3 sortable-list">
                     <!-- Tasks dynamically added here -->
                     <!-- Simplified Example structure for app.js reference:
@@ -336,10 +403,10 @@
 
         <!-- Right Column: Details Preview (2/3 width on md+) -->
         <div class="w-full md:w-2/3 flex-shrink-0">
-            <div id="previewPanel" class="bg-white rounded-lg shadow-sm p-6 md:p-8 border border-gray-200 sticky top-10">
-                <h2 class="text-xl font-semibold mb-5 text-gray-800">Task Details</h2>
-                <div id="previewContent" class="prose max-w-none text-gray-700">
-                    <p class="italic text-gray-500">Select a task from the list to see its details here.</p>
+            <div id="previewPanel" class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:p-8 border border-gray-200 dark:border-gray-700 sticky top-10">
+                <h2 class="text-xl font-semibold mb-5 text-gray-800 dark:text-gray-200">Task Details</h2>
+                <div id="previewContent" class="prose max-w-none text-gray-700 dark:text-gray-300">
+                    <p class="italic text-gray-500 dark:text-gray-400">Select a task from the list to see its details here.</p>
                     <!-- Preview content will be loaded here -->
                 </div>
                  <div id="previewActions" class="mt-4"></div>
@@ -348,15 +415,52 @@
 
     </div> <!-- End Main Layout Container -->
 
+    <script>
+        // Dark Mode Toggle Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const htmlElement = document.documentElement;
+            
+            // Check for saved theme preference or use system preference
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            // Apply the saved theme or system preference
+            if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                htmlElement.classList.add('dark');
+            }
+            
+            // Toggle dark mode on button click
+            darkModeToggle.addEventListener('click', function() {
+                htmlElement.classList.toggle('dark');
+                
+                // Save preference to localStorage
+                if (htmlElement.classList.contains('dark')) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+            
+            // Keyboard accessibility
+            darkModeToggle.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    darkModeToggle.click();
+                }
+            });
+        });
+    </script>
+
     <script src="app.js" defer></script>
 
     <!-- Footer -->
-    <footer class="mt-12 py-6 border-t border-gray-200 text-center text-gray-500 text-sm">
+    <footer class="mt-12 py-6 border-t border-gray-200 dark:border-gray-700 text-center text-gray-500 dark:text-gray-400 text-sm">
         <p>Built By Shri</p>
         <a href="https://www.youtube.com/@shri-builds-ai-and-automations" 
            target="_blank" 
            rel="noopener noreferrer"
-           class="hover:text-blue-600 transition duration-150 ease-in-out underline underline-offset-2">
+           class="hover:text-blue-600 dark:hover:text-blue-400 transition duration-150 ease-in-out underline underline-offset-2">
            YouTube Channel
         </a>
     </footer>
