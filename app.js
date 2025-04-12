@@ -7,8 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const previewActions = document.getElementById('previewActions');
     const bannerTitle = document.getElementById('bannerTitle'); // Get Banner Title H1
     const editableListTitle = document.getElementById('editableListTitle'); // Get Editable H2
+    // New elements for collapsible panel
+    const taskListColumn = document.getElementById('taskListColumn');
+    const taskDetailsColumn = document.getElementById('taskDetailsColumn');
+    const toggleDetailsButton = document.getElementById('toggleDetailsButton');
+    const toggleIcon = document.getElementById('toggleIcon');
 
     const storageKey = 'todoTasks';
+    const detailsCollapsedKey = 'detailsPanelCollapsed'; // Key for storing collapsed state
     let selectedTaskId = null; // Track the selected task ID
     let draggedTask = null; // Track the currently dragged task
 
@@ -461,6 +467,31 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTaskList();
     };
 
+    // ----- Collapsible Panel Logic -----
+
+    const applyPanelState = (isCollapsed) => {
+        if (!taskListColumn || !taskDetailsColumn || !toggleIcon) return; // Guard clause
+
+        if (isCollapsed) {
+            taskDetailsColumn.classList.add('details-collapsed');
+            taskListColumn.classList.add('list-expanded');
+            toggleIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />'; // Right arrow
+            toggleDetailsButton.setAttribute('aria-label', 'Expand Task Details Panel');
+        } else {
+            taskDetailsColumn.classList.remove('details-collapsed');
+            taskListColumn.classList.remove('list-expanded');
+            toggleIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />'; // Left arrow
+            toggleDetailsButton.setAttribute('aria-label', 'Collapse Task Details Panel');
+        }
+    };
+
+    const toggleDetailsPanel = () => {
+        const isCollapsed = taskDetailsColumn.classList.contains('details-collapsed');
+        const newState = !isCollapsed;
+        localStorage.setItem(detailsCollapsedKey, JSON.stringify(newState));
+        applyPanelState(newState);
+    };
+
     // ----- Application Initialization -----
     const initializeApp = () => {
         renderTaskList();
@@ -529,6 +560,18 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Focus the task input on load for user convenience
         taskInput.focus();
+
+        // Initialize Collapsible Panel State
+        if (toggleDetailsButton) {
+            const savedState = localStorage.getItem(detailsCollapsedKey);
+            // Default to not collapsed if no saved state
+            const initialStateCollapsed = savedState ? JSON.parse(savedState) : false; 
+            applyPanelState(initialStateCollapsed);
+            
+            toggleDetailsButton.addEventListener('click', toggleDetailsPanel);
+        } else {
+            console.warn('Toggle details button not found.');
+        }
     };
     
     // Start the app
